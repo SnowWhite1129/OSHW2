@@ -59,6 +59,8 @@ class Client:
                 if frameCount % 10 == 0:
                     islic = Image.detect()
                 if islic:
+                    print("Success:", end='')
+                    print(frameCount)
                     frameList.append(frameCount)
                 frameCount += 1
             self.writeFile(frameList)
