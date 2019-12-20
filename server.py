@@ -89,7 +89,7 @@ def start():
                 server.close()
                 client = Client(clientsock, client_number)
                 client.LicencePlateDetector()
-                exit(0)
+                os._exit(0)
             clientsock.close()
 
 
