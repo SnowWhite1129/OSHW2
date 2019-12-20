@@ -1,0 +1,8 @@
+{
+    "secure_connection": false,
+    "namenode_url": "3.227.246.96",
+    "port": 50070,
+    "user": "ubuntu",
+    "root_path": "/",
+    "img_dir": "/0856124img"
+}
