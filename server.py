@@ -33,8 +33,8 @@ class Client:
         f.close()
 
     def LicencePlateDetector(self):
-        DP = DataProcessor()
-        DP.InitImgDir()
+        #DP = DataProcessor()
+        #DP.InitImgDir()
 
         with self.sock:
             fileLength = 6
@@ -67,8 +67,10 @@ class Client:
                     frameList.append(frameCount)
                 frameCount += 1
             self.writeFile(frameList)
-            DP.UpLoad(self.fileno + ".mp4", self.fileno + "tmp.mp4")
-            DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
+            print(frameList)
+            #DP.UpLoad(self.fileno + ".mp4", self.fileno + "tmp.mp4")
+            #DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
+
 
 
 class TServer(threading.Thread):
