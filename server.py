@@ -1,9 +1,11 @@
-import os
 import cv2
 import socket
 import numpy as np
 from upload import DataProcessor
 from detect_opencv import Image
+import threading
+
+lock = threading.Lock()
 
 
 class Client:
@@ -68,29 +70,33 @@ class Client:
             DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
 
 
+class TServer(threading.Thread):
+    def __init__(self, socket, num):
+        threading.Thread.__init__(self)
+        self.socket = socket
+        self.num = num
+    def run(self):
+        Client(self.socket, self.num).LicencePlateDetector()
+        self.socket.close()
+
+
 def start():
-    client_number = 0
+    clientNumber = 0
     MAXCLIENT = 5
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #reuse tcp
     server.bind(("127.0.0.1", 8888))
     print("Sever is binding 127.0.0.1:8888")
 
     while True:
-        if client_number <= MAXCLIENT:
+        if clientNumber <= MAXCLIENT:
             server.listen(1)
             print("Listening")
             clientsock, clientAddress = server.accept()
             print("Accept")
-            client_number += 1
-            pid = os.fork()
-            if pid == 0:
-                server.close()
-                client = Client(clientsock, client_number)
-                client.LicencePlateDetector()
-                os._exit(0)
-            clientsock.close()
+            clientNumber += 1
+            TServer(clientsock, clientNumber).run()
 
 
 if __name__ == "__main__":
