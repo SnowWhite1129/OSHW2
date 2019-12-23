@@ -5,7 +5,7 @@ from upload import DataProcessor
 from detect_opencv import Image
 import threading
 
-lock = threading.Lock()
+#lock = threading.Lock()
 
 
 class Client:
@@ -96,7 +96,7 @@ def start():
             clientsock, clientAddress = server.accept()
             print("Accept")
             clientNumber += 1
-            TServer(clientsock, clientNumber).run()
+            TServer(clientsock, clientNumber).start()
 
 
 if __name__ == "__main__":
