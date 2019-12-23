@@ -20,6 +20,6 @@ class Image:
             cvOut = self.cvNet.forward()
         for detection in cvOut[0, 0, :, :]:
             score = float(detection[2])
-            if score > 0.6:
+            if score > 0.5:
                 return True
         return False
