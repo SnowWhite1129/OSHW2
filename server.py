@@ -57,10 +57,10 @@ class Client:
                 data = np.frombuffer(stringData, dtype="uint8")
                 decimg = cv2.imdecode(data, 1)
                 video.write(decimg)
-                Image(decimg, cvNet)
+                img = Image(decimg, cvNet)
                 islic = False
                 if frameCount % 10 == 0:
-                    islic = Image.detect()
+                    islic = img.detect()
                 if islic:
                     print("Success:", end='')
                     print(frameCount)
