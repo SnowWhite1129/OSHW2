@@ -70,13 +70,14 @@ class Client:
 
 
 class TServer(threading.Thread):
-    def __init__(self, socket, num):
+    def __init__(self, sock, num):
         threading.Thread.__init__(self)
-        self.socket = socket
+        self.sock = sock
         self.num = num
+
     def run(self):
-        Client(self.socket, self.num).LicencePlateDetector()
-        self.socket.close()
+        Client(self.sock, self.num).LicencePlateDetector()
+        self.sock.close()
 
 
 def start():
