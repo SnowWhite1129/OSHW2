@@ -58,9 +58,8 @@ class Client:
                 decimg = cv2.imdecode(data, 1)
                 video.write(decimg)
                 img = Image(decimg, cvNet)
-                islic = False
-                if frameCount % 10 == 0:
-                    islic = img.detect()
+                
+                islic = img.detect()
                 if islic:
                     print("Success:", end='')
                     print(frameCount)
