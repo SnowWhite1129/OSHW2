@@ -38,36 +38,35 @@ class Client:
         fileLength = 6
         cvNet = cv2.dnn.readNetFromCaffe("tmp/mssd512_voc.prototxt", "tmp/mssd512_voc.caffemodel")
 
-        with self.sock:
-            filename = self.sock.recv(fileLength).decode()  # Demo will always be 6 bytes
-            resolution = (1280, 720)
-            print("File name: ", filename)
-            frameCount = 0
-            frameList = []
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-            video = cv2.VideoWriter(self.fileno + "tmp.mp4", fourcc, 60, resolution)
-            while True:
-                length = self.sock.recv(16)
-                if not length:
-                    break
-                stringData = self.recvData(int(length))
-                if not stringData:
-                    break
-                data = np.frombuffer(stringData, dtype="uint8")
-                decimg = cv2.imdecode(data, 1)
-                video.write(decimg)
-                Image(decimg, cvNet)
-                islic = False
-                if frameCount % 10 == 0:
-                    islic = Image.detect()
-                if islic:
-                    print("Success:", end='')
-                    print(frameCount)
-                    frameList.append(frameCount)
-                frameCount += 1
-            self.writeFile(frameList)
-            DP.UpLoad(self.fileno + ".mp4", self.fileno + "tmp.mp4")
-            DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
+        filename = self.sock.recv(fileLength).decode()  # Demo will always be 6 bytes
+        resolution = (1280, 720)
+        print("File name: ", filename)
+        frameCount = 0
+        frameList = []
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        video = cv2.VideoWriter(self.fileno + "tmp.mp4", fourcc, 60, resolution)
+        while True:
+            length = self.sock.recv(16)
+            if not length:
+                break
+            stringData = self.recvData(int(length))
+            if not stringData:
+                break
+            data = np.frombuffer(stringData, dtype="uint8")
+            decimg = cv2.imdecode(data, 1)
+            video.write(decimg)
+            Image(decimg, cvNet)
+            islic = False
+            if frameCount % 10 == 0:
+                islic = Image.detect()
+            if islic:
+                print("Success:", end='')
+                print(frameCount)
+                frameList.append(frameCount)
+            frameCount += 1
+        self.writeFile(frameList)
+        DP.UpLoad(self.fileno + ".mp4", self.fileno + "tmp.mp4")
+        DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
 
 
 class TServer(threading.Thread):
