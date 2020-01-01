@@ -54,7 +54,7 @@ class DataProcessor:
         print("writing complete, time delta is " + str(delta))
         return True
 
-    def UploadVideo(self, remote_name, local_path):
+    def Upload(self, remote_name, local_path):
         assert os.path.exists(local_path)
 
         remote_path = self.img_dir + remote_name

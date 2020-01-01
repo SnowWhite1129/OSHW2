@@ -36,7 +36,7 @@ class Client:
     def LicencePlateDetector(self):
         with self.sock:
             fileLength = 6
-            cvNet = cv2.dnn.readNetFromCaffe("tmp/mssd512_voc.prototxt", "tmp/mssd512_voc.caffemodel")
+            cvNet = cv2.dnn.readNetFromCaffe("model/mssd512_voc.prototxt", "model/mssd512_voc.caffemodel")
 
             filename = self.sock.recv(fileLength).decode()  # Demo will always be 6 bytes
             resolution = (1280, 720)
