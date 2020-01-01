@@ -58,5 +58,5 @@ class DataProcessor:
         assert os.path.exists(local_path)
 
         remote_path = self.img_dir + remote_name
-        self.hdfs_client.upload(remote_path, local_path)
+        self.hdfs_client.upload(remote_path, local_path, True)
         return True
