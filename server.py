@@ -11,6 +11,9 @@ class Client:
         self.sock = sock
         self.num = num
         self.fileno = "0" + str(num)
+        self.DP = DataProcessor()
+        if num == 1:
+            DataProcessor.InitImgDir()
 
     def recvData(self, count):
         buf = b''
@@ -31,13 +34,9 @@ class Client:
         f.close()
 
     def LicencePlateDetector(self):
-        #DP = DataProcessor()
-        #DP.InitImgDir()
-
         with self.sock:
             fileLength = 6
             cvNet = cv2.dnn.readNetFromCaffe("tmp/mssd512_voc.prototxt", "tmp/mssd512_voc.caffemodel")
-            #cvNet = cv2.dnn.readNetFromCaffe("tmp/lpr.prototxt", "tmp/lpr.caffemodel")
 
             filename = self.sock.recv(fileLength).decode()  # Demo will always be 6 bytes
             resolution = (1280, 720)
@@ -67,10 +66,8 @@ class Client:
                 frameCount += 1
             self.writeFile(frameList)
             print(frameList)
-            #DP.UpLoad(self.fileno + ".mp4", self.fileno + "tmp.mp4")
-            #DP.UpLoad(self.fileno + ".txt", self.fileno + ".txt")
-
-
+            self.DP.Upload(self.fileno + ".mp4", self.fileno + "tmp.mp4")
+            self.DP.Upload(self.fileno + ".txt", self.fileno + ".txt")
 
 class TServer(threading.Thread):
     def __init__(self, sock, num):
