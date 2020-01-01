@@ -13,7 +13,7 @@ class Client:
         self.fileno = "0" + str(num)
         self.DP = DataProcessor()
         if num == 1:
-            DataProcessor.InitImgDir()
+            self.DP.InitImgDir()
 
     def recvData(self, count):
         buf = b''
