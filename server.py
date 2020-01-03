@@ -5,7 +5,6 @@ from upload import DataProcessor
 from detect_opencv import Image
 import threading
 
-
 class Client:
     def __init__(self, sock, num):
         self.sock = sock
@@ -13,6 +12,7 @@ class Client:
         self.fileno = "0" + str(num)
         self.DP = DataProcessor()
         if num == 1:
+            print("Init Img Dir")
             self.DP.InitImgDir()
 
     def recvData(self, count):
@@ -57,17 +57,23 @@ class Client:
                 video.write(decimg)
                 img = Image(decimg, cvNet)
                 islic = False
-                if frameCount % 10 == 0:
+                if frameCount % 10 == 0 and frameCount > 0:
                     islic = img.detect()
                 if islic:
                     print("Success:", end='')
                     print(frameCount)
-                    frameList.append(frameCount)
+                    for i in range(frameCount-10, frameCount):
+                        print("Client", end='')
+                        print(self.num, end='')
+                        print(": Detected frame", end='')
+                        print(i)
+                        frameList.append(i)
                 frameCount += 1
             self.writeFile(frameList)
             print(frameList)
             self.DP.Upload(self.fileno + ".mp4", self.fileno + "tmp.mp4")
             self.DP.Upload(self.fileno + ".txt", self.fileno + ".txt")
+            print("Upload files dond.")
 
 class TServer(threading.Thread):
     def __init__(self, sock, num):
